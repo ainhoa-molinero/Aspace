@@ -60,6 +60,24 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+.vscode/
+/media
+/static
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+.vscode/
+/media
+/static
+
 # Flask stuff:
 instance/
 .webassets-cache
