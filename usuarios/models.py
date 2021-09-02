@@ -22,16 +22,14 @@ class Usuario(models.Model):
 
         try:
             fecha = Usuario.objects.filter(sesion__id_usuario=self.id_usuario).order_by('-sesion__fecha').values_list('sesion__fecha',flat=True)[0]
-            print(fecha)
-            # return(fecha)
             actual = datetime.datetime.now(datetime.timezone.utc)
-            print(fecha)
-
-            print(actual)
 
             dias = (actual-fecha).days
-            print('dias',dias)
-            if dias==0:
+            print('=============')
+            print(dias)
+            if dias<0:
+                return(f'Última sesión dentro de {abs(dias)} días')
+            elif dias==0:
                 return 'Última sesión hoy'
             elif dias>0 and dias<31:
                 return f'Útima sesión hace {dias} días'
