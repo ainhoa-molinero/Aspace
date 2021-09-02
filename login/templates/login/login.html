@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{%  if error %}
+{{ error }}
+<br />
+<br />
+
+{%  endif %}
+
+
+<div class="container pt-3">
+  <div class="row justify-content-center align-items-center text-center">
+    <div class="col-4">
+      <h1> Login </h1>
+      <form method="POST" action = "{% url 'login' %}">
+       {% csrf_token %}
+        <div class="form-floating">
+          <input type="text" class="form-control" name="username" >
+          <label for="floatingInput">Username</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" >
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <br />
+          <input class ="btn btn-success"type ="submit" value="Login" />
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+{%  endblock %}

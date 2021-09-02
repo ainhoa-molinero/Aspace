@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<div class="container py-4 ">
+  <h2><strong>{{usuario}}</strong></h2>
+  <p class="fst-italic text-muted">{{usuario.get_last_sesion_date}}.</p>
+      <hr class="featurette-divider">
+      <h3><strong>Estadísticas generales</strong></h3>
+        <div class="container-fluid pt-5">
+          <div class="row">
+            <div class="col-6">
+              <div id="pie_graph" data-url="{% url 'get_pie_graph' id_usuario=usuario.id_usuario %}"></div>
+            </div>
+            <div class="col-6">
+              <div id="user_results_time_graph" data-url="{% url 'get_user_results_time_graph' id_usuario=usuario.id_usuario %}"></div>
+            </div>
+          </div>
+        </div>
+        <hr class="featurette-divider">
+        <h3><strong>Estadísticas específicas</strong></h3>
+        <div class="container-fluid pt-5">
+          <div class="row">
+            <div class="col-6">
+              <div id="game_time_graph" data-url="{% url 'get_game_time_graph' id_usuario=usuario.id_usuario %}"></div>
+            </div>
+            <div class="col-6">
+              <div id="col_graph" data-url="{% url 'get_col_graph' id_usuario=usuario.id_usuario %}"></div>
+            </div>
+          </div>
+        </div>
+
+   <hr class="featurette-divider">
+
+   <h3><strong>Resumen sesiones</strong></h3>
+     {% if table_sesion.data %}
+        {% render_table table_sesion %}
+     {% else %}
+            <p class="fst-italic text-muted">No hay sesiones registradas.</p>
+      {% endif %}
+</div>
+
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $.ajax({
+    url: $("#pie_graph").attr("data-url"),
+    dataType: 'json',
+    success: function (data) {
+      Highcharts.chart("pie_graph", data);
+    }
+  });
+</script>
+<script>
+  $.ajax({
+    url: $("#col_graph").attr("data-url"),
+    dataType: 'json',
+    success: function (data) {
+      Highcharts.chart("col_graph", data);
+    }
+  });
+</script>
+<script>
+  $.ajax({
+    url: $("#game_time_graph").attr("data-url"),
+    dataType: 'json',
+    success: function (data) {
+      Highcharts.chart("game_time_graph", data);
+    }
+  });
+</script>
+<script>
+  $.ajax({
+    url: $("#user_results_time_graph").attr("data-url"),
+    dataType: 'json',
+    success: function (data) {
+      Highcharts.chart("user_results_time_graph", data);
+    }
+  });
+</script>
+
+{% endblock %}

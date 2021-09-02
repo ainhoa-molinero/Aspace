@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="container" id="d">
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-3 py-3">
+
+      <div class="col">
+        <a href="{% url 'perfiles' %}" style="text-decoration: none;">
+          <div class="card card-cover my-card h-100 overflow-hidden  rounded-5 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
+            <div class="d-flex flex-column h-100 p-3 pb-3 text-shadow-1 text-center">
+              <h2 class="pt-2 mt-5 mb-4 display-6 lh-1 fw-bold">Perfiles </h2>
+                <div class="container-fluid center">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/dxjqoygy.json"
+                        trigger="hover"
+                        colors="primary:#84b9ec,secondary:#f7a35c"
+                        style="width:150px;height:150px">
+                    </lord-icon>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+
+      <div class="col">
+        <a href="{% url 'subir_sesion' %}" style="text-decoration: none;" >
+          <div class="card card-cover my-card h-100 overflow-hidden  rounded-5 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
+            <div class="d-flex flex-column h-100 p-3 pb-3 text-shadow-1 text-center">
+              <h2 class="pt-2 mt-5 mb-4 display-6 lh-1 fw-bold">Subir sesión</h2>
+              <div class="container-fluid center">
+                <lord-icon
+                    src="https://cdn.lordicon.com/igrslveu.json"
+                    trigger="hover"
+                    colors="primary:#84b9ec,secondary:#f7a35c"
+
+                    style="width:150px;height:150px">
+                </lord-icon>
+                </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="{% url 'json_example' %}" style="text-decoration: none;" >
+          <div class="card card-cover my-card h-100 overflow-hidden  rounded-5 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
+            <div class="d-flex flex-column h-100 p-3 pb-3 text-shadow-1 text-center">
+              <h2 class="pt-2 mt-5 mb-4 display-6 lh-1 fw-bold">Estadísticas</h2>
+              <div class="container-fluid center">
+                <lord-icon
+                    src="https://cdn.lordicon.com/tyounuzx.json"
+                    trigger="hover"
+                    colors="primary:#84b9ec,secondary:#f7a35c"
+                    style="width:150px;height:150px">
+                </lord-icon>
+                </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col">
+          <div class="card card-cover h-100 overflow-hidden rounded-5 shadow-lg" style="background-image: url('unsplash-photo-2.jpg');">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1 text-center">
+                <h3 class="fw-bold" >Juegos</h3>
+                  <div class="container">
+                    <lord-icon
+                      src="https://cdn.lordicon.com/ktxpktdd.json"
+                      trigger="hover"
+                      colors="primary:#84b9ec,secondary:#f7a35c"
+                      style="width:80px;height:80px; center">
+                    </lord-icon>
+                        <hr class="featurette-divider">
+                    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center ">
+                      {% for juego in juegos.all %}
+                      <a href="{% url 'juegos' id_juego=juego.id_juego %}" style="text-decoration: none;">
+                      <div class="col pt-2">
+                        <div class="container my-card">
+                        <h5 class="fw-bold text-shadow-1 text-center"  >{{juego.nombre_juego}}</h5>
+                          <div class="container pt-4">
+                            <img src="{{juego.icono.url}}" width=150>
+                            <!-- <img src="{{juego.icono.url}}" alt="flaticon.com" width=150
+                            onmouseover="this.src='{{juego.img_juego.url}}';"
+                            onmouseout="this.src='{{juego.icono.url}}'"></a> -->
+                          </div>
+                        </div>
+                      </div>
+                      </a>
+                      {% endfor %}
+
+                    </div>
+                      </div>
+                  </div>
+            </div>
+    </div>
+
+
+
+
+
+
+
+
+{% endblock %}

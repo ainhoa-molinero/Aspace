@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container py-4 ">
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message|safe }}
+    </div>
+    {% endfor %}
+  {% endif %}
+  <h2><strong>Subir resultados</strong></h2>
+  <p>Descarga los datos de sesión desde cada actividad y súbelos a la aplicación desde aquí.</p>
+  <form action="{% url 'subir_sesion' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row justify-content-center">
+      <div class="col-11" >
+        <input class="form-control" type="file" name="document">
+      </div>
+      <div class="col-1">
+        <button type="submit" value="Submit" class="btn btn-primary" >Actualizar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+
+{% endblock %}
