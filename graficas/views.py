@@ -13,7 +13,6 @@ COLORS = ['#f7a35c', '#7cb5ec', "#f15c80", "#90ed7d", "#434348", "#8085e9", "#e4
 def random_colors(colors=COLORS):
     from random import shuffle
     shuffle(colors)
-    print(colors)
     return(colors)
 
 def json_example(request):
@@ -53,7 +52,7 @@ def get_pie_graph(request, id_usuario=None):
         },
         'colors': COLORS,
         'title': {
-            'text': 'Fallos vs. aciertos totales'
+            'text': 'Aciertos vs. fallos totales'
         },
         'tooltip': {
             'pointFormat': '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -85,7 +84,7 @@ def get_pie_graph(request, id_usuario=None):
 def get_time_graph(request):
     '''Gráfica con tiempo medio para cada usuario a lo largo de un periodo'''
     fecha_inicial = '2021-07-01'
-    fecha_final = '2022-08-30'
+    fecha_final = '2021-12-30'
 
     data = Sesion.objects.values('id_usuario__nombre','id_usuario__apellido','fecha', 'tiempo_medio')\
         .annotate(trunc_fecha=TruncDate('fecha'))\
@@ -185,11 +184,10 @@ def get_time_graph(request):
     return JsonResponse(chart)
 
 
-
-def get_game_time_graph(request, id_usuario):
+def get_game_time_graph(request, id_usuario=None):
     '''Gráfica con tiempo medio para cada juego a lo largo de un periodo'''
     fecha_inicial = '2021-07-01'
-    fecha_final = '2022-08-30'
+    fecha_final = '2021-12-30'
 
     obj = Sesion.objects.all()
     obj = filter_usuario(obj, id_usuario)
@@ -292,10 +290,10 @@ def get_game_time_graph(request, id_usuario):
     return JsonResponse(chart)
 
 
-def get_user_results_time_graph(request, id_usuario):
+def get_user_results_time_graph(request, id_usuario=None):
     '''Gráfica con aciertos y fallos a lo largo de un período'''
     fecha_inicial = '2021-07-01'
-    fecha_final = '2022-08-30'
+    fecha_final = '2021-12-30'
 
     obj = Sesion.objects.all()
     obj = filter_usuario(obj, id_usuario)
@@ -317,32 +315,30 @@ def get_user_results_time_graph(request, id_usuario):
     for dt in daterange(start_dt, end_dt):
         dias_dicc[dt.strftime("%d/%m/%Y")] = None
 
-    # series_dicc = {}
-    # for i in data:
-    #     usuario = i['id_usuario']
-    #     fecha = i['trunc_fecha'].strftime("%d/%m/%Y")
-    #     cuenta = i['tiempo_medio']
-    #     if usuario not in series_dicc.keys():
-    #         series_dicc[usuario] = {
-    #             'name':usuario,
-    #             'data':dias_dicc.copy()
-    #         }
-    #         series_dicc[usuario]['data'][fecha] = cuenta
-    #     else:
-    #         if series_dicc[usuario]['data'][fecha] is not None:
-    #             series_dicc[usuario]['data'][fecha] += cuenta
-    #         else:
-    #             series_dicc[usuario]['data'][fecha] = cuenta
-    #
-    #
-    # series_dicc_final = {}
-    # for k in series_dicc.keys():
-    #     series_dicc_final[k] = {
-    #         'name':series_dicc[k]['name'],
-    #         'data':list(series_dicc[k]['data'].values())
-    #     }
+    series_dicc = {}
+    for i in data:
+        for name, atribute in {'Aciertos':'aciertos','Fallos':'fallos'}.items():
+            name = name
+            fecha = i['trunc_fecha'].strftime("%d/%m/%Y")
+            cuenta = i[atribute]
+            if name not in series_dicc.keys():
+                series_dicc[name] = {
+                    'name':name,
+                    'data':dias_dicc.copy()
+                }
+                series_dicc[name]['data'][fecha] = cuenta
+            else:
+                if series_dicc[name]['data'][fecha] is not None:
+                    series_dicc[name]['data'][fecha] += cuenta
+                else:
+                    series_dicc[name]['data'][fecha] = cuenta
 
-
+    series_dicc_final = {}
+    for k in series_dicc.keys():
+        series_dicc_final[k] = {
+            'name':series_dicc[k]['name'],
+            'data':list(series_dicc[k]['data'].values())
+        }
 
     chart = {
         'chart': {
@@ -353,10 +349,10 @@ def get_user_results_time_graph(request, id_usuario):
         },
         'colors': COLORS,
         'title': {
-            'text': f'Proporción de variantes ({fecha_inicial}|{fecha_final})'
+            'text': f'Aciertos vs. fallos por día' # ({fecha_inicial}|{fecha_final})
         },
         'subtitle': {
-            'text': f'Haz click y arrastra para hacer zoom sobre una zona.'
+            # 'text': f'Haz click y arrastra para hacer zoom sobre una zona.'
         },
         'tooltip': {
             'shared': True,
@@ -403,7 +399,7 @@ def get_user_results_time_graph(request, id_usuario):
 def get_col_graph(request, id_usuario=None):
     '''Gráfica con proporción de aciertos en cada juego'''
     fecha_inicial = '2021-07-01'
-    fecha_final = '2022-08-30'
+    fecha_final = '2021-12-30'
 
     # Filtrar por usuario/s
     obj = Sesion.objects.all()
